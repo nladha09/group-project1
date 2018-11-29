@@ -1,4 +1,3 @@
-
 var genArray = [];
 //localStorage.clear()
 displaData();
@@ -36,17 +35,16 @@ $("#add-weight-btn").on("click", function (event) {
     $("#date-input").val(""); // clears the textbox when done
     $("#weight-input").val("");
     $("#goal-weight-input").val("");
-
     // console.log("clicked"); // console.log
     // console.log(date);
     // console.log(currentWeight);
     // console.log(goalWeight);
 
+
     // do we need to add in "display" ids for tabular data?? to have data stick (even when page refreshes?)
     // $("#date-display").append(date);
     // $("#weight-display").append(currentWeight);
     // $("#goal-weight-display").append(goalWeight);
-
 
     genArray.push({
         date: date,
@@ -69,3 +67,4 @@ $("#add-weight-btn").on("click", function (event) {
 $("#reset-data-btn").on("click", function () {
     localStorage.clear(); // to clear everything in local storage
 });
+
