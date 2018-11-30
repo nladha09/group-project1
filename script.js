@@ -63,8 +63,87 @@ $("#add-weight-btn").on("click", function (event) {
     console.log("2nd", localStorage.Data);
     console.log("Array", genArray);
     displaData();
-});
 
+    
+var current = currentWeight;
+var goal = goalWeight;
+
+
+$(document).on("click", "#add-weight-btn", function() {
+
+    if (current>goal) {
+
+            var queryURL = "https://www.food2fork.com/api/search?key=afcdbd2008087c20c031ea2f831cc8a9&q=broccoli,beef&sort=r&page=1";
+
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function (response) {
+
+                response = JSON.parse(response);
+                console.log(response.recipes[i]);
+
+                for (var i=0; i<3; i++) {
+
+                    var recipeDiv = $("<div>");
+                        recipeDiv.addClass("recipeDiv");
+
+                        var title = $("<h2>")
+                        title.addClass("title");
+                        title.text(response.recipes[i].title);
+                        recipeDiv.append(title);
+
+                        var recipeImage = $("<img>");
+                        recipeImage.addClass("recipeImage");
+                        recipeImage.attr("src", response.recipes[i].image_url);
+                        recipeDiv.append(recipeImage);
+
+                        var recipeUrl = $("<button>");
+                            recipeUrl.attr("href", 'response.recipes[i].source_url');
+                            recipeUrl.text(response.recipes[i].source_url);
+                            recipeDiv.append(recipeUrl);
+        
+                        $("#Recipes").prepend(recipeDiv);
+                }
+            });
+    } else {
+        var queryURL = "https://www.food2fork.com/api/search?key=afcdbd2008087c20c031ea2f831cc8a9&q=pasta&sort=r&page=1";
+
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function (response) {
+
+                response = JSON.parse(response);
+                console.log(response.recipes[i]);
+
+                for (var i=0; i<3; i++) {
+
+                    var recipeDiv = $("<div>");
+                        recipeDiv.addClass("recipeDiv");
+
+                        var title = $("<h2>")
+                        title.addClass("title");
+                        title.text(response.recipes[i].title);
+                        recipeDiv.append(title);
+
+                        var recipeImage = $("<img>");
+                        recipeImage.addClass("recipeImage");
+                        recipeImage.attr("src", response.recipes[i].image_url);
+                        recipeDiv.append(recipeImage);
+
+                        var recipeUrl = $("<button>");
+                            recipeUrl.attr("onclick", response.recipes[i].source_url);
+                            recipeUrl.text(response.recipes[i].source_url);
+                            recipeDiv.append(recipeUrl);
+        
+                        $("#Recipes").prepend(recipeDiv);
+                }
+            })
+    }
+})
+
+});
 
 // $("#data-table").append("<tr><td>" + localStorage.getItem("Date") + "<td>" + localStorage.getItem("Current Weight") + "<td>" + localStorage.getItem("Goal Weight")); // appending data to table on right
 
