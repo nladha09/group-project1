@@ -32,6 +32,11 @@ $("#add-weight-btn").on("click", function (event) {
     var currentWeight = $("#weight-input").val().trim();
     var goalWeight = $("#goal-weight-input").val().trim();
 
+    if ($.trim($("#date-input").val()) === "" && $.trim($("#weight-input").val()) === "" && $.trim($("#goal-weight-input").val()) === "") {
+        $("#error-message").text("please fill out all fields")
+        return false;
+    }
+
     $("#date-input").val(""); // clears the textbox when done
     $("#weight-input").val("");
     $("#goal-weight-input").val("");
@@ -66,5 +71,6 @@ $("#add-weight-btn").on("click", function (event) {
 
 $("#reset-data-btn").on("click", function () {
     localStorage.clear(); // to clear everything in local storage
+    window.location.reload(); // page refresh to clear out table data
 });
 
