@@ -6,21 +6,20 @@ displaData();
 
 function displaData() {
     var len;
-
+    // local values
     console.log("1st", localStorage.Data);
     if (localStorage.Data) {
-
         genArray = JSON.parse(localStorage.getItem("Data"));
         console.log(genArray);
         len = genArray.length;
-        
+        dateArray = [];
+        weightArray = [];
+        console.log("date " + dateArray);
+        console.log("weight " + weightArray);
         for (var i = 0; i < len; i++) {
             dateArray.push(genArray[i].date);
             weightArray.push(genArray[i].currentWeight);
-            console.log("date " + dateArray);
-            console.log("weight " + weightArray);
         }
-
     }
     else {
         len = 0
@@ -38,7 +37,7 @@ function displaData() {
             "</td><td>" + genArray[i].goalWeight + "</td>"); // appending data to table on right
     };
 
-    $("#myChart").empty();
+    // $("#myChart").update();
 
     var ctx = document.getElementById('myChart').getContext('2d');
     var chart = new Chart(ctx, {
@@ -55,12 +54,13 @@ function displaData() {
                 data: weightArray,
             }]
         },
-
+      
         // Configuration options go here
         options: {}
+        
     });
 
-
+    
 }
 
 $("#add-weight-btn").on("click", function (event) {
