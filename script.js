@@ -32,7 +32,7 @@ $("#add-weight-btn").on("click", function (event) {
     var currentWeight = $("#weight-input").val().trim();
     var goalWeight = $("#goal-weight-input").val().trim();
 
-    if ($.trim($("#date-input").val()) === "" && $.trim($("#weight-input").val()) === "" && $.trim($("#goal-weight-input").val()) === "") {
+    if ($.trim($("#date-input").val()) === "" || $.trim($("#weight-input").val()) === "" || $.trim($("#goal-weight-input").val()) === "") {
         $("#error-message").text("please fill out all fields")
         return false;
     }
