@@ -116,7 +116,7 @@ $("#add-weight-btn").on("click", function (event) {
                     var recipeDiv = $("<div>");
                     recipeDiv.addClass("recipeDiv");
 
-                    var title = $("<h2>")
+                    var title = $("<h3>")
                     title.addClass("title");
                     title.text(response.recipes[i].title);
                     recipeDiv.append(title);
@@ -126,16 +126,14 @@ $("#add-weight-btn").on("click", function (event) {
                     recipeImage.attr("src", response.recipes[i].image_url);
                     recipeDiv.append(recipeImage);
 
-                    var recipeUrl = $("<button>");
-                    recipeUrl.attr("href", 'response.recipes[i].source_url');
-                    recipeUrl.text(response.recipes[i].source_url);
-                    recipeDiv.append(recipeUrl);
+                    recipeImage.wrap("<a target='_blank' href='" + response.recipes[i].source_url + "'</a>");
+                    $("#Recipes").prepend(recipeDiv);
 
                     $("#Recipes").prepend(recipeDiv);
                 }
             });
         } else {
-            var queryURL = "https://www.food2fork.com/api/search?key=afcdbd2008087c20c031ea2f831cc8a9&q=pasta&sort=r&page=1";
+            var queryURL = "https://www.food2fork.com/api/search?key=7f89612971fa4144c5a7fcc50ece5305&q=pasta&sort=r&page=1";
 
             $.ajax({
                 url: queryURL,
@@ -150,7 +148,7 @@ $("#add-weight-btn").on("click", function (event) {
                     var recipeDiv = $("<div>");
                     recipeDiv.addClass("recipeDiv");
 
-                    var title = $("<h2>")
+                    var title = $("<h3>")
                     title.addClass("title");
                     title.text(response.recipes[i].title);
                     recipeDiv.append(title);
@@ -160,11 +158,7 @@ $("#add-weight-btn").on("click", function (event) {
                     recipeImage.attr("src", response.recipes[i].image_url);
                     recipeDiv.append(recipeImage);
 
-                    var recipeUrl = $("<button>");
-                    recipeUrl.attr("onclick", response.recipes[i].source_url);
-                    recipeUrl.text(response.recipes[i].source_url);
-                    recipeDiv.append(recipeUrl);
-
+                    recipeImage.wrap("<a target='_blank' href='" + response.recipes[i].source_url + "'</a>");
                     $("#Recipes").prepend(recipeDiv);
                 }
             })
