@@ -10,6 +10,16 @@ input:focus:invalid {
     color: red;
 }
 
-/* .recipeImage {
-    float: left;
-} */
+#data-table {
+    overflow-y: auto;
+}
+
+.recipeImage {
+    display: inline-block;
+    height: 200px;
+    width: 300px;
+    border: 5px solid black;
+    margin: 25px;
+    text-align: center;
+}
+
