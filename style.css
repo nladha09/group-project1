@@ -9,3 +9,7 @@ input:focus:invalid {
 #error-message { 
     color: red;
 }
+
+/* .recipeImage {
+    float: left;
+} */
