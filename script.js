@@ -2,6 +2,7 @@ var genArray = [];
 //localStorage.clear()
 var dateArray = [];
 var weightArray = [];
+var goalWeightArray = [];
 displaData();
 
 function displaData() {
@@ -14,20 +15,20 @@ function displaData() {
         len = genArray.length;
         dateArray = [];
         weightArray = [];
+        goalWeightArray = [];
         console.log("date " + dateArray);
         console.log("weight " + weightArray);
+        console.log("goal " + goalWeightArray);
         for (var i = 0; i < len; i++) {
             dateArray.push(genArray[i].date);
             weightArray.push(genArray[i].currentWeight);
+            goalWeightArray.push(genArray[i].goalWeight);
         }
-    }
-    else {
+    } else {
         len = 0
     };
 
     $("#data-table").html("");
-    
-    
 
     for (var i = 0; i < len; i++) {
 
@@ -49,18 +50,20 @@ function displaData() {
             labels: dateArray,
             datasets: [{
                 label: "My Current Weight",
-                backgroundColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'transparent',
                 borderColor: 'rgb(255, 99, 132)',
                 data: weightArray,
+            }, {
+                label: "My Goal Weight",
+                backgroundColor: 'transparent',
+                borderColor: 'blue',
+                data: goalWeightArray,
             }]
         },
-      
+
         // Configuration options go here
         options: {}
-        
     });
-
-    
 }
 
 $("#add-weight-btn").on("click", function (event) {
@@ -77,25 +80,12 @@ $("#add-weight-btn").on("click", function (event) {
     $("#date-input").val(""); // clears the textbox when done
     $("#weight-input").val("");
     $("#goal-weight-input").val("");
-    // console.log("clicked"); // console.log
-    // console.log(date);
-    // console.log(currentWeight);
-    // console.log(goalWeight);
-
-
-    // do we need to add in "display" ids for tabular data?? to have data stick (even when page refreshes?)
-    // $("#date-display").append(date);
-    // $("#weight-display").append(currentWeight);
-    // $("#goal-weight-display").append(goalWeight);
 
     genArray.push({
         date: date,
         currentWeight: currentWeight,
         goalWeight: goalWeight
     });
-
-
-
 
     console.log("Array", genArray);
     // Store all content into localStorage
@@ -104,14 +94,12 @@ $("#add-weight-btn").on("click", function (event) {
     console.log("Array", genArray);
     displaData();
 
-    
-var current = currentWeight;
-var goal = goalWeight;
+    var current = currentWeight;
+    var goal = goalWeight;
 
+    $(document).on("click", "#add-weight-btn", function () {
 
-$(document).on("click", "#add-weight-btn", function() {
-
-    if (current>goal) {
+        if (current > goal) {
 
             var queryURL = "https://www.food2fork.com/api/search?key=afcdbd2008087c20c031ea2f831cc8a9&q=broccoli,beef&sort=r&page=1";
 
@@ -123,31 +111,31 @@ $(document).on("click", "#add-weight-btn", function() {
                 response = JSON.parse(response);
                 console.log(response.recipes[i]);
 
-                for (var i=0; i<3; i++) {
+                for (var i = 0; i < 3; i++) {
 
                     var recipeDiv = $("<div>");
-                        recipeDiv.addClass("recipeDiv");
+                    recipeDiv.addClass("recipeDiv");
 
-                        var title = $("<h2>")
-                        title.addClass("title");
-                        title.text(response.recipes[i].title);
-                        recipeDiv.append(title);
+                    var title = $("<h2>")
+                    title.addClass("title");
+                    title.text(response.recipes[i].title);
+                    recipeDiv.append(title);
 
-                        var recipeImage = $("<img>");
-                        recipeImage.addClass("recipeImage");
-                        recipeImage.attr("src", response.recipes[i].image_url);
-                        recipeDiv.append(recipeImage);
+                    var recipeImage = $("<img>");
+                    recipeImage.addClass("recipeImage");
+                    recipeImage.attr("src", response.recipes[i].image_url);
+                    recipeDiv.append(recipeImage);
 
-                        var recipeUrl = $("<button>");
-                            recipeUrl.attr("href", 'response.recipes[i].source_url');
-                            recipeUrl.text(response.recipes[i].source_url);
-                            recipeDiv.append(recipeUrl);
-        
-                        $("#Recipes").prepend(recipeDiv);
+                    var recipeUrl = $("<button>");
+                    recipeUrl.attr("href", 'response.recipes[i].source_url');
+                    recipeUrl.text(response.recipes[i].source_url);
+                    recipeDiv.append(recipeUrl);
+
+                    $("#Recipes").prepend(recipeDiv);
                 }
             });
-    } else {
-        var queryURL = "https://www.food2fork.com/api/search?key=afcdbd2008087c20c031ea2f831cc8a9&q=pasta&sort=r&page=1";
+        } else {
+            var queryURL = "https://www.food2fork.com/api/search?key=afcdbd2008087c20c031ea2f831cc8a9&q=pasta&sort=r&page=1";
 
             $.ajax({
                 url: queryURL,
@@ -157,40 +145,35 @@ $(document).on("click", "#add-weight-btn", function() {
                 response = JSON.parse(response);
                 console.log(response.recipes[i]);
 
-                for (var i=0; i<3; i++) {
+                for (var i = 0; i < 3; i++) {
 
                     var recipeDiv = $("<div>");
-                        recipeDiv.addClass("recipeDiv");
+                    recipeDiv.addClass("recipeDiv");
 
-                        var title = $("<h2>")
-                        title.addClass("title");
-                        title.text(response.recipes[i].title);
-                        recipeDiv.append(title);
+                    var title = $("<h2>")
+                    title.addClass("title");
+                    title.text(response.recipes[i].title);
+                    recipeDiv.append(title);
 
-                        var recipeImage = $("<img>");
-                        recipeImage.addClass("recipeImage");
-                        recipeImage.attr("src", response.recipes[i].image_url);
-                        recipeDiv.append(recipeImage);
+                    var recipeImage = $("<img>");
+                    recipeImage.addClass("recipeImage");
+                    recipeImage.attr("src", response.recipes[i].image_url);
+                    recipeDiv.append(recipeImage);
 
-                        var recipeUrl = $("<button>");
-                            recipeUrl.attr("onclick", response.recipes[i].source_url);
-                            recipeUrl.text(response.recipes[i].source_url);
-                            recipeDiv.append(recipeUrl);
-        
-                        $("#Recipes").prepend(recipeDiv);
+                    var recipeUrl = $("<button>");
+                    recipeUrl.attr("onclick", response.recipes[i].source_url);
+                    recipeUrl.text(response.recipes[i].source_url);
+                    recipeDiv.append(recipeUrl);
+
+                    $("#Recipes").prepend(recipeDiv);
                 }
             })
-    }
-})
+        }
+    })
 
 });
-
-// $("#data-table").append("<tr><td>" + localStorage.getItem("Date") + "<td>" + localStorage.getItem("Current Weight") + "<td>" + localStorage.getItem("Goal Weight")); // appending data to table on right
-
 
 $("#reset-data-btn").on("click", function () {
     localStorage.clear(); // to clear everything in local storage
     window.location.reload(); // page refresh to clear out table data
 });
-
-
