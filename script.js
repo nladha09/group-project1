@@ -116,7 +116,7 @@ $("#add-weight-btn").on("click", function (event) {
                     var recipeDiv = $("<div>");
                     recipeDiv.addClass("recipeDiv");
 
-                    var title = $("<h3>")
+                    var title = $("<h5>")
                     title.addClass("title");
                     title.text(response.recipes[i].title);
                     recipeDiv.append(title);
@@ -127,8 +127,6 @@ $("#add-weight-btn").on("click", function (event) {
                     recipeDiv.append(recipeImage);
 
                     recipeImage.wrap("<a target='_blank' href='" + response.recipes[i].source_url + "'</a>");
-                    $("#Recipes").prepend(recipeDiv);
-
                     $("#Recipes").prepend(recipeDiv);
                 }
             });
@@ -148,7 +146,7 @@ $("#add-weight-btn").on("click", function (event) {
                     var recipeDiv = $("<div>");
                     recipeDiv.addClass("recipeDiv");
 
-                    var title = $("<h3>")
+                    var title = $("<h5>")
                     title.addClass("title");
                     title.text(response.recipes[i].title);
                     recipeDiv.append(title);
