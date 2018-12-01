@@ -131,7 +131,7 @@ $("#add-weight-btn").on("click", function (event) {
                 }
             });
         } else {
-            var queryURL = "https://www.food2fork.com/api/search?key=7f89612971fa4144c5a7fcc50ece5305&q=pasta&sort=r&page=1";
+            var queryURL = "https://www.food2fork.com/api/search?key=afcdbd2008087c20c031ea2f831cc8a9&q=pasta&sort=r&page=1";
 
             $.ajax({
                 url: queryURL,
