@@ -73,7 +73,7 @@ $("#add-weight-btn").on("click", function (event) {
     var goalWeight = $("#goal-weight-input").val().trim();
 
     if ($.trim($("#date-input").val()) === "" || $.trim($("#weight-input").val()) === "" || $.trim($("#goal-weight-input").val()) === "") {
-        $("#error-message").text("please fill out all fields")
+        $("#error-message").text("Please fill out ALL fields ☺")
         return false;
     }
 
@@ -96,12 +96,13 @@ $("#add-weight-btn").on("click", function (event) {
 
     var current = currentWeight;
     var goal = goalWeight;
+    var pNumber = 1;
 
-    $(document).on("click", "#add-weight-btn", function () {
+    $(document).on("click", "#add-weight-btn", function () { // using document.on"click" since #add-weight-btn already has an onclick
 
         if (current > goal) {
 
-            var queryURL = "https://www.food2fork.com/api/search?key=afcdbd2008087c20c031ea2f831cc8a9&q=broccoli,beef&sort=r&page=1";
+            var queryURL = "https://www.food2fork.com/api/search?key=07ffefdb900b05233883177a85254be2&q=broccoli,beef&sort=r&page=" + pNumber;
 
             $.ajax({
                 url: queryURL,
@@ -128,10 +129,15 @@ $("#add-weight-btn").on("click", function (event) {
 
                     recipeImage.wrap("<a target='_blank' href='" + response.recipes[i].source_url + "'</a>");
                     $("#Recipes").prepend(recipeDiv);
-                }
+
+                    $("#add-recipes-btn").on("click", function (event) {
+                        event.preventDefault()
+                        pNumber++;
+                    });
+                };
             });
         } else {
-            var queryURL = "https://www.food2fork.com/api/search?key=afcdbd2008087c20c031ea2f831cc8a9&q=pasta&sort=r&page=1";
+            var queryURL = "https://www.food2fork.com/api/search?key=07ffefdb900b05233883177a85254be2&q=pasta&sort=r&page=" + pNumber;
 
             $.ajax({
                 url: queryURL,
@@ -140,8 +146,6 @@ $("#add-weight-btn").on("click", function (event) {
 
                 response = JSON.parse(response);
                 console.log(response.recipes[i]);
-
-                for (var i = 0; i < 3; i++) {
 
                     var recipeDiv = $("<div>");
                     recipeDiv.addClass("recipeDiv");
@@ -158,12 +162,15 @@ $("#add-weight-btn").on("click", function (event) {
 
                     recipeImage.wrap("<a target='_blank' href='" + response.recipes[i].source_url + "'</a>");
                     $("#Recipes").prepend(recipeDiv);
-                }
-            })
-        }
-    })
+                });
+            };
+        });
+    });
 
-});
+    $("#add-data-btn").on("click", function () {
+        window.scrollTo(0,0);
+        window.location.reload();
+    });
 
 $("#reset-data-btn").on("click", function () {
     localStorage.clear(); // to clear everything in local storage

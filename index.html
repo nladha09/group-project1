@@ -9,9 +9,10 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
   <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
-  
+  <link rel="shortcut icon" href="images/smile.ico">
+
 </head>
-  
+
 <body>
   <div class="container">
     <div class="jumbotron">
@@ -22,10 +23,10 @@
     <div class="row">
       <div class="col-md-6">
         <div class="card mb-6">
-          <div class="card-header">Title</div>
+          <div class="card-header">Data Input</div>
           <div class="card-body">
             <form>
-                <p id="error-message"></p>
+              <p id="error-message"></p>
               <div class="form-group">
                 <label for="date-input"></label>Date (MM/DD/YYYY)</label>
                 <input class="form-control" type="date" id="date-input" required>
@@ -36,7 +37,8 @@
               </div>
               <div class="form-group">
                 <label for="goal-weight-input">Goal Weight</label>
-                <input class="form-control" id="goal-weight-input" placeholder="Enter a Number" input type="number" required>
+                <input class="form-control" id="goal-weight-input" placeholder="Enter a Number" input type="number"
+                  required>
               </div>
               <button class="btn btn-primary float-right" id="add-weight-btn">Submit</button>
             </form>
@@ -45,7 +47,7 @@
       </div>
       <div class="col-md-6">
         <div class="card mb-6">
-          <div class="card-header">Table</div>
+          <div class="card-header">Data Table</div>
           <div class="card-body table-wrapper-scroll-y">
             <div id="data-input"></div>
             <table class="table table-sm table-hover">
@@ -66,28 +68,29 @@
     </div>
     <br>
     <div class="row">
-        <div class="col-md-2"></div>
-          <div class="col-md-8">
-            <div class="card mb-8">
-              <div class="card-header">Chart</div>
-                <div class="card-body">
-                  <canvas id="myChart" width="50" height="50"></canvas>
-                </div>   
-            </div>
-          </div>
-        <div class="col-md-2"></div>
-      </div>
-      <br>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card mb-12">
-              <div class="card-header">Recipes</div>
-                <div class="card-body">
-                  <div id="Recipes"></div>
-                </div>
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <div class="card mb-8">
+          <div class="card-header">Chart Data</div>
+          <div class="card-body">
+            <canvas id="myChart" width="50" height="50"></canvas>
           </div>
         </div>
       </div>
+      <div class="col-md-2"></div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card mb-12">
+          <div class="card-header">Recipes</div>
+          <div class="card-body">
+            <div id="Recipes"></div>
+            <button class="btn btn-primary float-right" id="add-data-btn">Add New</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <script src="https://code.jquery.com/jquery.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
