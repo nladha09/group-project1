@@ -129,14 +129,11 @@ $("#add-weight-btn").on("click", function (event) {
 
                     recipeImage.wrap("<a target='_blank' href='" + response.recipes[i].source_url + "'</a>");
                     $("#Recipes").prepend(recipeDiv);
+                    };
+                });
+            }
 
-                    $("#add-recipes-btn").on("click", function (event) {
-                        event.preventDefault()
-                        pNumber++;
-                    });
-                };
-            });
-        } else {
+            else {
             var queryURL = "https://www.food2fork.com/api/search?key=07ffefdb900b05233883177a85254be2&q=pasta&sort=r&page=" + pNumber;
 
             $.ajax({
@@ -146,6 +143,8 @@ $("#add-weight-btn").on("click", function (event) {
 
                 response = JSON.parse(response);
                 console.log(response.recipes[i]);
+
+                for (var i = 0; i < 3; i++) {
 
                     var recipeDiv = $("<div>");
                     recipeDiv.addClass("recipeDiv");
@@ -162,17 +161,20 @@ $("#add-weight-btn").on("click", function (event) {
 
                     recipeImage.wrap("<a target='_blank' href='" + response.recipes[i].source_url + "'</a>");
                     $("#Recipes").prepend(recipeDiv);
-                });
-            };
-        });
+                };
+            });
+        };
     });
 
-    $("#add-data-btn").on("click", function () {
+    $("#add-data-btn").on("click", function () { // adding in for user to press to prevent recipe duplication
+        $("body").css("display", "none");
+        $("body").fadeIn(2000);
         window.scrollTo(0,0);
         window.location.reload();
     });
 
-$("#reset-data-btn").on("click", function () {
+    $("#reset-data-btn").on("click", function () {
     localStorage.clear(); // to clear everything in local storage
     window.location.reload(); // page refresh to clear out table data
+    });
 });
