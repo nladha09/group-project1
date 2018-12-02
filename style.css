@@ -6,6 +6,12 @@ input:focus:invalid {
     outline: none;
 } */
 
+body {
+	background-image: url("images/blue.png");
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
 #error-message { 
     color: red;
 }
@@ -15,6 +21,8 @@ input:focus:invalid {
 }
 
 .recipeImage {
+    /* float: left;
+    justify-content: flex-start; */
     display: inline-block;
     height: 200px;
     width: 300px;
