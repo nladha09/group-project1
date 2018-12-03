@@ -69,3 +69,7 @@ a {
     max-height: 335px;
     overflow-y: auto;
 }
+
+.bg-light {
+    background-color: rgb(0, 0, 0, 0);
+}
