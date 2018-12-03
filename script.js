@@ -3,6 +3,8 @@ var genArray = [];
 var dateArray = [];
 var weightArray = [];
 var goalWeightArray = [];
+var netWeightArray = [];
+var goalWeightHolder;
 displaData();
 
 function displaData() {
@@ -16,17 +18,26 @@ function displaData() {
         dateArray = [];
         weightArray = [];
         goalWeightArray = [];
+        netWeightArray = [];
         console.log("date " + dateArray);
         console.log("weight " + weightArray);
         console.log("goal " + goalWeightArray);
+        console.log("net: " + netWeightArray); 
+        $("#goal-input").hide();
         for (var i = 0; i < len; i++) {
             dateArray.push(genArray[i].date);
             weightArray.push(genArray[i].currentWeight);
             goalWeightArray.push(genArray[i].goalWeight);
+            netWeightArray.push(genArray[i].netWeight);
+            goalWeightHolder = genArray[i].goalWeight;
+            console.log("goalweightholder: " + goalWeightHolder)
         }
+        $("#goalWeightDisplay").html("<h2>" + "Your Goal Weight Is: " + goalWeightHolder + "pounds" + "</h2>")
     } else {
+        $("#goalWeightDisplay").html("<h2>" + "Fill Out The Form To Begin" + "</h2>");
         len = 0
     };
+
 
     $("#data-table").html("");
 
@@ -35,7 +46,7 @@ function displaData() {
         $("#data-table").append(
             "<tr><td>" + genArray[i].date +
             "</td><td>" + genArray[i].currentWeight +
-            "</td><td>" + genArray[i].goalWeight + "</td>"); // appending data to table on right
+            "</td><td>" + genArray[i].netWeight + "</td>"); // appending data to table on right
     };
 
     // $("#myChart").update();
@@ -68,11 +79,18 @@ function displaData() {
 
 $("#add-weight-btn").on("click", function (event) {
     event.preventDefault() // prevents page from refreshing when hitting submit button
+    var goalWeight;
     var date = $("#date-input").val().trim(); // setting vars for user date input from form
     var currentWeight = $("#weight-input").val().trim();
-    var goalWeight = $("#goal-weight-input").val().trim();
+    var netWeight;
 
-    if ($.trim($("#date-input").val()) === "" || $.trim($("#weight-input").val()) === "" || $.trim($("#goal-weight-input").val()) === "") {
+    if ($("#goal-weight-input").val().trim() === "") {
+        goalWeight = goalWeightHolder
+    } else {
+        goalWeight = $("#goal-weight-input").val().trim()
+    }
+
+    if ($.trim($("#date-input").val()) === "" || $.trim($("#weight-input").val()) === "") {
         $("#error-message").text("Please fill out ALL fields ☺")
         return false;
     }
@@ -81,10 +99,19 @@ $("#add-weight-btn").on("click", function (event) {
     $("#weight-input").val("");
     $("#goal-weight-input").val("");
 
+    currentWeight = parseInt(currentWeight);
+    goalWeight = parseInt(goalWeight);
+    netWeight = currentWeight - goalWeight
+
+    if (currentWeight>goalWeight) {
+        netWeight = "+" + netWeight; 
+    }
+
     genArray.push({
         date: date,
         currentWeight: currentWeight,
-        goalWeight: goalWeight
+        goalWeight: goalWeight,
+        netWeight: netWeight
     });
 
     console.log("Array", genArray);
@@ -94,15 +121,13 @@ $("#add-weight-btn").on("click", function (event) {
     console.log("Array", genArray);
     displaData();
 
-    var current = currentWeight;
-    var goal = goalWeight;
     var pNumber = 1;
 
-    $(document).on("click", "#add-weight-btn", function () { // using document.on"click" since #add-weight-btn already has an onclick
+        if (currentWeight > goalWeight) {
 
-        if (current > goal) {
+            console.log("this part works");
 
-            var queryURL = "https://www.food2fork.com/api/search?key=07ffefdb900b05233883177a85254be2&q=broccoli,beef&sort=r&page=" + pNumber;
+            var queryURL = "https://www.food2fork.com/api/search?key=afcdbd2008087c20c031ea2f831cc8a9&q=broccoli,beef&page=" + pNumber;
 
             $.ajax({
                 url: queryURL,
@@ -110,7 +135,7 @@ $("#add-weight-btn").on("click", function (event) {
             }).then(function (response) {
 
                 response = JSON.parse(response);
-                console.log(response.recipes[i]);
+                console.log(response.recipes);
 
                 for (var i = 0; i < 3; i++) {
 
@@ -164,7 +189,6 @@ $("#add-weight-btn").on("click", function (event) {
                 };
             });
         };
-    });
 
     $("#add-data-btn").on("click", function () { // adding in for user to press to prevent recipe duplication
         $("body").css("display", "none");
