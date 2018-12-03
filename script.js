@@ -3,7 +3,15 @@ var genArray = [];
 var dateArray = [];
 var weightArray = [];
 var goalWeightArray = [];
+var netWeightArray = [];
+var goalWeightHolder;
+var currentDate = moment().format('YYYY-MM-DD');
+console.log(currentDate);
 displaData();
+
+// $(document).ready( function() {
+$('#date-input').val(currentDate);
+// });​
 
 function displaData() {
     var len;
@@ -16,17 +24,26 @@ function displaData() {
         dateArray = [];
         weightArray = [];
         goalWeightArray = [];
+        netWeightArray = [];
         console.log("date " + dateArray);
         console.log("weight " + weightArray);
         console.log("goal " + goalWeightArray);
+        console.log("net: " + netWeightArray);
+        $("#goal-input").hide();
         for (var i = 0; i < len; i++) {
             dateArray.push(genArray[i].date);
             weightArray.push(genArray[i].currentWeight);
             goalWeightArray.push(genArray[i].goalWeight);
+            netWeightArray.push(genArray[i].netWeight);
+            goalWeightHolder = genArray[i].goalWeight;
+            console.log("goalweightholder: " + goalWeightHolder)
         }
+        $("#goalWeightDisplay").html("<h2>" + "Your Goal Weight Is: " + goalWeightHolder + " pounds" + "</h2>")
     } else {
+        $("#goalWeightDisplay").html("<h2>" + "Fill Out The Form To Begin" + "</h2>");
         len = 0
     };
+
 
     $("#data-table").html("");
 
@@ -35,7 +52,7 @@ function displaData() {
         $("#data-table").append(
             "<tr><td>" + genArray[i].date +
             "</td><td>" + genArray[i].currentWeight +
-            "</td><td>" + genArray[i].goalWeight + "</td>"); // appending data to table on right
+            "</td><td>" + genArray[i].netWeight + "</td>"); // appending data to table on right
     };
 
     // $("#myChart").update();
@@ -68,11 +85,18 @@ function displaData() {
 
 $("#add-weight-btn").on("click", function (event) {
     event.preventDefault() // prevents page from refreshing when hitting submit button
+    var goalWeight;
     var date = $("#date-input").val().trim(); // setting vars for user date input from form
     var currentWeight = $("#weight-input").val().trim();
-    var goalWeight = $("#goal-weight-input").val().trim();
+    var netWeight;
 
-    if ($.trim($("#date-input").val()) === "" || $.trim($("#weight-input").val()) === "" || $.trim($("#goal-weight-input").val()) === "") {
+    if ($("#goal-weight-input").val().trim() === "") {
+        goalWeight = goalWeightHolder
+    } else {
+        goalWeight = $("#goal-weight-input").val().trim()
+    }
+
+    if ($.trim($("#date-input").val()) === "" || $.trim($("#weight-input").val()) === "") {
         $("#error-message").text("Please fill out ALL fields ☺")
         return false;
     }
@@ -81,10 +105,19 @@ $("#add-weight-btn").on("click", function (event) {
     $("#weight-input").val("");
     $("#goal-weight-input").val("");
 
+    currentWeight = parseInt(currentWeight);
+    goalWeight = parseInt(goalWeight);
+    netWeight = goalWeight - currentWeight;
+
+    if (currentWeight < goalWeight) {
+        netWeight = "+" + netWeight;
+    }
+
     genArray.push({
         date: date,
         currentWeight: currentWeight,
-        goalWeight: goalWeight
+        goalWeight: goalWeight,
+        netWeight: netWeight
     });
 
     console.log("Array", genArray);
@@ -94,87 +127,82 @@ $("#add-weight-btn").on("click", function (event) {
     console.log("Array", genArray);
     displaData();
 
-    var current = currentWeight;
-    var goal = goalWeight;
     var pNumber = 1;
+    if (currentWeight > goalWeight) {
 
-    $(document).on("click", "#add-weight-btn", function () { // using document.on"click" since #add-weight-btn already has an onclick
+        console.log("this part works");
 
-        if (current > goal) {
+        var queryURL = "https://www.food2fork.com/api/search?key=afcdbd2008087c20c031ea2f831cc8a9&q=broccoli,beef&page=" + pNumber;
 
-            var queryURL = "https://www.food2fork.com/api/search?key=07ffefdb900b05233883177a85254be2&q=broccoli,beef&sort=r&page=" + pNumber;
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function (response) {
 
-            $.ajax({
-                url: queryURL,
-                method: "GET"
-            }).then(function (response) {
+            response = JSON.parse(response);
+            console.log(response.recipes);
 
-                response = JSON.parse(response);
-                console.log(response.recipes[i]);
+            $("#Recipes").empty();
 
-                for (var i = 0; i < 3; i++) {
+            for (var i = 0; i < 3; i++) {
+                var randomNumber = [Math.floor(Math.random() *  30)];
+                console.log("this is a random number: " + randomNumber);
 
-                    var recipeDiv = $("<div>");
-                    recipeDiv.addClass("recipeDiv");
+                var recipeDiv = $("<div>");
+                recipeDiv.addClass("recipeDiv");
 
-                    var title = $("<h5>")
-                    title.addClass("title");
-                    title.text(response.recipes[i].title);
-                    recipeDiv.append(title);
+                var title = $("<h5>")
+                title.addClass("title");
+                title.text(response.recipes[randomNumber].title);
+                recipeDiv.append(title);
 
-                    var recipeImage = $("<img>");
-                    recipeImage.addClass("recipeImage");
-                    recipeImage.attr("src", response.recipes[i].image_url);
-                    recipeDiv.append(recipeImage);
+                var recipeImage = $("<img>");
+                recipeImage.addClass("recipeImage");
+                recipeImage.attr("src", response.recipes[randomNumber].image_url);
+                recipeDiv.append(recipeImage);
 
-                    recipeImage.wrap("<a target='_blank' href='" + response.recipes[i].source_url + "'</a>");
-                    $("#Recipes").prepend(recipeDiv);
-                    };
-                });
-            }
+                recipeImage.wrap("<a target='_blank' href='" + response.recipes[randomNumber].source_url + "'</a>");
+                $("#Recipes").prepend(recipeDiv);
+            };
+        });
+    }
 
-            else {
-            var queryURL = "https://www.food2fork.com/api/search?key=07ffefdb900b05233883177a85254be2&q=pasta&sort=r&page=" + pNumber;
+    else {
+        var queryURL = "https://www.food2fork.com/api/search?key=07ffefdb900b05233883177a85254be2&q=pasta&sort=r&page=" + pNumber;
 
-            $.ajax({
-                url: queryURL,
-                method: "GET"
-            }).then(function (response) {
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function (response) {
 
-                response = JSON.parse(response);
-                console.log(response.recipes[i]);
+            response = JSON.parse(response);
+            console.log(response.recipes[i]);
 
-                for (var i = 0; i < 3; i++) {
+            $("#Recipes").empty();
 
-                    var recipeDiv = $("<div>");
-                    recipeDiv.addClass("recipeDiv");
+            for (var i = 0; i < 3; i++) {
+                var randomNumber = [Math.floor(Math.random() *  30)];
+                var recipeDiv = $("<div>");
+                recipeDiv.addClass("recipeDiv");
 
-                    var title = $("<h5>")
-                    title.addClass("title");
-                    title.text(response.recipes[i].title);
-                    recipeDiv.append(title);
+                var title = $("<h5>")
+                title.addClass("title");
+                title.text(response.recipes[randomNumber].title);
+                recipeDiv.append(title);
 
-                    var recipeImage = $("<img>");
-                    recipeImage.addClass("recipeImage");
-                    recipeImage.attr("src", response.recipes[i].image_url);
-                    recipeDiv.append(recipeImage);
+                var recipeImage = $("<img>");
+                recipeImage.addClass("recipeImage");
+                recipeImage.attr("src", response.recipes[randomNumber].image_url);
+                recipeDiv.append(recipeImage);
 
-                    recipeImage.wrap("<a target='_blank' href='" + response.recipes[i].source_url + "'</a>");
-                    $("#Recipes").prepend(recipeDiv);
-                };
-            });
-        };
-    });
-
-    $("#add-data-btn").on("click", function () { // adding in for user to press to prevent recipe duplication
-        $("body").css("display", "none");
-        $("body").fadeIn(2000);
-        window.scrollTo(0,0);
-        window.location.reload();
-    });
+                recipeImage.wrap("<a target='_blank' href='" + response.recipes[randomNumber].source_url + "'</a>");
+                $("#Recipes").prepend(recipeDiv);
+            };
+        });
+    };
 
     $("#reset-data-btn").on("click", function () {
-    localStorage.clear(); // to clear everything in local storage
-    window.location.reload(); // page refresh to clear out table data
+        localStorage.clear(); // to clear everything in local storage
+        window.location.reload(); // page refresh to clear out table data
     });
 });
