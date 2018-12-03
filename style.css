@@ -39,6 +39,10 @@ h2 {
     text-align: center;
 }
 
+.card-header {
+    background-color: lightskyblue;
+}
+
 #title {
     text-align: center;
     font-size: 85px;
