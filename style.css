@@ -31,3 +31,6 @@ body {
     text-align: center;
 }
 
+.card-header {
+    background-color: lightskyblue;
+}
