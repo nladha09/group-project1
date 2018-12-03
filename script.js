@@ -5,7 +5,13 @@ var weightArray = [];
 var goalWeightArray = [];
 var netWeightArray = [];
 var goalWeightHolder;
+var currentDate = moment().format('YYYY-MM-DD');
+console.log(currentDate);
 displaData();
+
+// $(document).ready( function() {
+$('#date-input').val(currentDate);
+// });​
 
 function displaData() {
     var len;
@@ -22,7 +28,7 @@ function displaData() {
         console.log("date " + dateArray);
         console.log("weight " + weightArray);
         console.log("goal " + goalWeightArray);
-        console.log("net: " + netWeightArray); 
+        console.log("net: " + netWeightArray);
         $("#goal-input").hide();
         for (var i = 0; i < len; i++) {
             dateArray.push(genArray[i].date);
@@ -103,8 +109,8 @@ $("#add-weight-btn").on("click", function (event) {
     goalWeight = parseInt(goalWeight);
     netWeight = currentWeight - goalWeight
 
-    if (currentWeight>goalWeight) {
-        netWeight = "+" + netWeight; 
+    if (currentWeight > goalWeight) {
+        netWeight = "+" + netWeight;
     }
 
     genArray.push({
@@ -121,84 +127,81 @@ $("#add-weight-btn").on("click", function (event) {
     console.log("Array", genArray);
     displaData();
 
-    var pNumber = 1;
+    var pNumber = [Math.floor(Math.random() *  3 + 1)];
 
-        if (currentWeight > goalWeight) {
+    if (currentWeight > goalWeight) {
 
-            console.log("this part works");
+        console.log("this part works");
 
-            var queryURL = "https://www.food2fork.com/api/search?key=afcdbd2008087c20c031ea2f831cc8a9&q=broccoli,beef&page=" + pNumber;
+        var queryURL = "https://www.food2fork.com/api/search?key=afcdbd2008087c20c031ea2f831cc8a9&q=broccoli,beef&page=" + pNumber;
 
-            $.ajax({
-                url: queryURL,
-                method: "GET"
-            }).then(function (response) {
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function (response) {
 
-                response = JSON.parse(response);
-                console.log(response.recipes);
+            response = JSON.parse(response);
+            console.log(response.recipes);
 
-                for (var i = 0; i < 3; i++) {
+            $("#Recipes").empty();
 
-                    var recipeDiv = $("<div>");
-                    recipeDiv.addClass("recipeDiv");
+            for (var i = 0; i < 3; i++) {
 
-                    var title = $("<h5>")
-                    title.addClass("title");
-                    title.text(response.recipes[i].title);
-                    recipeDiv.append(title);
+                var recipeDiv = $("<div>");
+                recipeDiv.addClass("recipeDiv");
 
-                    var recipeImage = $("<img>");
-                    recipeImage.addClass("recipeImage");
-                    recipeImage.attr("src", response.recipes[i].image_url);
-                    recipeDiv.append(recipeImage);
+                var title = $("<h5>")
+                title.addClass("title");
+                title.text(response.recipes[i].title);
+                recipeDiv.append(title);
 
-                    recipeImage.wrap("<a target='_blank' href='" + response.recipes[i].source_url + "'</a>");
-                    $("#Recipes").prepend(recipeDiv);
-                    };
-                });
-            }
+                var recipeImage = $("<img>");
+                recipeImage.addClass("recipeImage");
+                recipeImage.attr("src", response.recipes[i].image_url);
+                recipeDiv.append(recipeImage);
 
-            else {
-            var queryURL = "https://www.food2fork.com/api/search?key=07ffefdb900b05233883177a85254be2&q=pasta&sort=r&page=" + pNumber;
+                recipeImage.wrap("<a target='_blank' href='" + response.recipes[i].source_url + "'</a>");
+                $("#Recipes").prepend(recipeDiv);
+            };
+        });
+    }
 
-            $.ajax({
-                url: queryURL,
-                method: "GET"
-            }).then(function (response) {
+    else {
+        var queryURL = "https://www.food2fork.com/api/search?key=07ffefdb900b05233883177a85254be2&q=pasta&sort=r&page=" + pNumber;
 
-                response = JSON.parse(response);
-                console.log(response.recipes[i]);
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function (response) {
 
-                for (var i = 0; i < 3; i++) {
+            response = JSON.parse(response);
+            console.log(response.recipes[i]);
 
-                    var recipeDiv = $("<div>");
-                    recipeDiv.addClass("recipeDiv");
+            $("#Recipes").empty();
 
-                    var title = $("<h5>")
-                    title.addClass("title");
-                    title.text(response.recipes[i].title);
-                    recipeDiv.append(title);
+            for (var i = 0; i < 3; i++) {
 
-                    var recipeImage = $("<img>");
-                    recipeImage.addClass("recipeImage");
-                    recipeImage.attr("src", response.recipes[i].image_url);
-                    recipeDiv.append(recipeImage);
+                var recipeDiv = $("<div>");
+                recipeDiv.addClass("recipeDiv");
 
-                    recipeImage.wrap("<a target='_blank' href='" + response.recipes[i].source_url + "'</a>");
-                    $("#Recipes").prepend(recipeDiv);
-                };
-            });
-        };
+                var title = $("<h5>")
+                title.addClass("title");
+                title.text(response.recipes[i].title);
+                recipeDiv.append(title);
 
-    $("#add-data-btn").on("click", function () { // adding in for user to press to prevent recipe duplication
-        $("body").css("display", "none");
-        $("body").fadeIn(2000);
-        window.scrollTo(0,0);
-        window.location.reload();
-    });
+                var recipeImage = $("<img>");
+                recipeImage.addClass("recipeImage");
+                recipeImage.attr("src", response.recipes[i].image_url);
+                recipeDiv.append(recipeImage);
+
+                recipeImage.wrap("<a target='_blank' href='" + response.recipes[i].source_url + "'</a>");
+                $("#Recipes").prepend(recipeDiv);
+            };
+        });
+    };
 
     $("#reset-data-btn").on("click", function () {
-    localStorage.clear(); // to clear everything in local storage
-    window.location.reload(); // page refresh to clear out table data
+        localStorage.clear(); // to clear everything in local storage
+        window.location.reload(); // page refresh to clear out table data
     });
 });

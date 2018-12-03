@@ -5,7 +5,7 @@
 <head>
 
   <meta charset="UTF-8">
-  <title>Group Project</title>
+  <title>The Goal Achiever</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
   <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
@@ -15,11 +15,12 @@
 
 <body>
   <div class="container">
-    <div class="jumbotron">
-      <h1 class="text-center" id="qod-quote">
-        <script src="http://quotesondesign.com/api/3.0/api-3.0.js" type="text/javascript" charset="utf-8"></script>
-      </h1>
-    </div>
+      <h1 id="title">The Goal Achiever</h1>
+      <div id="quote-place">
+        <h2 class="text-center" id="qod-quote">
+          <script src="http://quotesondesign.com/api/3.0/api-3.0.js" type="text/javascript" charset="utf-8"></script>
+        </h2>
+      </div>
     <div class="row">
       <div class="col-md-6">
         <div class="card mb-6">
@@ -45,7 +46,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-6 scroll">
         <div class="card mb-6">
           <div class="card-header"><span id="goalWeightDisplay"></span></div>
           <div class="card-body table-wrapper-scroll-y">
@@ -68,28 +69,25 @@
     </div>
     <br>
     <div class="row">
-      <div class="col-md-2"></div>
       <div class="col-md-8">
         <div class="card mb-8">
-          <div class="card-header">Chart Data</div>
+          <div class="card-header" id="chart-data">Your Data</div>
           <div class="card-body">
-            <canvas id="myChart" width="50" height="50"></canvas>
+            <canvas id="myChart"></canvas>
           </div>
         </div>
       </div>
-      <div class="col-md-2"></div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card mb-12">
-          <div class="card-header">Recipes</div>
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-header" id="recipe-box">Check out these recipes to help achieve your goal</div>
           <div class="card-body">
             <div id="Recipes"></div>
-            <button class="btn btn-primary float-right" id="add-data-btn">Add New</button>
           </div>
         </div>
-      </div>
+      </div>    </div>
+    <br>
+    <div class="row">
+      
     </div>
   </div>
   <script src="https://code.jquery.com/jquery.js"></script>
